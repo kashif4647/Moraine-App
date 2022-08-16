@@ -26,18 +26,11 @@ async function createUser(user) {
   if (exist) {
     throw new Error('user already exists');
   }
-  user.otp = {
-    code: Math.floor(100000 + Math.random() * 900000),
-    expires: new Date(Date.now() + 3600000),
-  };
+
   const hash = await bcrypt.hash(user.password, 10);
   user.password = hash;
   const User = await UserRepo.createUser({ ...user });
-  const obj = {
-    name: user.firstName,
-    otp: user.otp.code,
-  };
-  await mail(user.email, obj, 'User Email Verification');
+
   return { User, message: 'user created successfully' };
 }
 
@@ -55,7 +48,7 @@ async function userLogin(email, password) {
   const token = jwt.sign({ dbUser }, process.env.JWT);
   const user = dbUser;
   delete user.password;
-  delete user.otp;
+
   return { user, token, message: 'user successfully login' };
 }
 
@@ -67,6 +60,48 @@ async function fetchApplicationByID(id) {
   return {
     response: app,
     message: 'Student application fetched!',
+  };
+}
+
+async function updateApplicationStatus(id, payload) {
+  const app = await ApplicationRepo.updateApplication(
+    { 'requests._id': id },
+    { $set: { 'requests.$.status': payload.status } }
+  );
+
+  if (!app) throw new Error('Something went wrong!');
+
+  return {
+    response: app,
+    message: 'Application status updated successfully!',
+  };
+}
+
+async function selectProgram(payload) {
+  const stdApp = await ApplicationRepo.fetchOneApplication({
+    studentRef: payload.studentRef,
+  });
+
+  if (stdApp) {
+    const { _id } = stdApp;
+    const proUpdate = await ApplicationRepo.updateApplication(
+      { _id },
+      { $set: { program: payload.programs } }
+    );
+
+    return {
+      response: proUpdate,
+      message: 'Program added successfully!',
+    };
+  }
+
+  const app = await ApplicationRepo.createApplication({ program: payload });
+
+  if (!app) throw new Error('Something went wrong!');
+
+  return {
+    response: app,
+    message: 'Your program added successfully!',
   };
 }
 
@@ -109,10 +144,21 @@ async function fetchApplication() {
   };
 }
 
+async function sendEmailToStudent(email, payload) {
+  const app = await mail(email, payload, 'Student notification');
+  return {
+    response: app,
+    message: 'Meeting scheduled successfully!',
+  };
+}
+
 export default {
   createUser,
   userLogin,
   createApplication,
   fetchApplication,
   fetchApplicationByID,
+  sendEmailToStudent,
+  updateApplicationStatus,
+  selectProgram,
 };

@@ -30,6 +30,16 @@ export default {
       return res.status(500).json({ error: err.message });
     }
   },
+  updateApplicationStatus: async (req, res) => {
+    try {
+      const payload = req.body;
+      const { id } = req.params;
+      const response = await UserService.updateApplicationStatus(id, payload);
+      return res.status(200).json(response);
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  },
   fetchApplication: async (req, res) => {
     try {
       const response = await UserService.fetchApplication();
@@ -50,8 +60,17 @@ export default {
   sendEmailToStudent: async (req, res) => {
     try {
       const { email } = req.params;
-      const { payload } = req.body;
+      const payload = req.body;
       const response = await UserService.sendEmailToStudent(email, payload);
+      return res.status(200).json(response);
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  },
+  selectProgram: async (req, res) => {
+    try {
+      const payload = req.body;
+      const response = await UserService.selectProgram(payload);
       return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({ error: err.message });

@@ -10,9 +10,11 @@ router.post('/signup', Validators.SignupValidator, AuthController.registration);
 router.post('/login', Validators.LoginValidator, AuthController.loginUser);
 
 router.post('/application', AuthController.createApplication);
+router.put('/application/:id', AuthController.updateApplicationStatus);
 router.get('/application', AuthController.fetchApplication);
 router.get('/application/:id', AuthController.fetchApplicationByID);
 
 router.get('/meet/student/:email', AuthController.sendEmailToStudent);
+router.put('/student/program', AuthController.selectProgram);
 
 export default router;

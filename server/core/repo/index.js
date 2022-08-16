@@ -27,7 +27,9 @@ class Repository {
     if (options) {
       params = { ...params, ...options };
     }
-    const instance = this.modelInstance.find(params);
+    const instance = this.modelInstance
+      .find(params)
+      .populate('studentRef', '-password');
     return plain ? instance.map(el => el.get({ plain: true })) : instance;
   }
 

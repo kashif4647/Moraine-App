@@ -16,6 +16,9 @@ const applicationSchema = new mongoose.Schema({
       },
     },
   ],
+  program: {
+    name: { type: String },
+  },
   studentRef: {
     type: Schema.Types.ObjectId,
     ref: 'User',
