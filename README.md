@@ -2,8 +2,12 @@
 
 ### Installation guide
 Run the following commands for backend APIs:
-1. `npm i` or `npm install`
-2. `npm run dev`
+1. Download the Moraine-DB.gz file and import it because it contains the users information. Password for all users is same `password12345`.
+  a) davepol@gmail.com - Registrar.
+  b) macp@gmail.com - Advisor.
+  c) mikel@gmail.com - Student.
+2. `npm i` or `npm install`
+3. `npm run dev`
 
 Server will run on port `7000`
 
