@@ -46,7 +46,7 @@ export default class ExpressServer {
     this.routes(this.app);
 
     this.app.use((req, res) => {
-      res.status(404).json({ message: `${req.url} pasth not found` });
+      res.status(404).json({ message: `${req.url} path not found` });
     });
     // this.app.use((err, req, res) => res.status(500).send({ error: err }));
     http.createServer(this.app).listen(port, welcome(port));
