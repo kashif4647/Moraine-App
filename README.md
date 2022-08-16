@@ -2,7 +2,7 @@
 
 ### Installation guide
 Run the following commands for backend APIs:
-1. Download the Moraine-DB.gz file and import it because it contains the users information. Password for all users is same `password12345`.
+1. Download the Moraine-DB.gz file and import using command `mongorestore --gzip --archive=Moraine-DB.gz` it because it contains the users information. Password for all users is same `password12345`.
   a) davepol@gmail.com - Registrar.
   b) macp@gmail.com - Advisor.
   c) mikel@gmail.com - Student.
