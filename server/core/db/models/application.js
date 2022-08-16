@@ -18,6 +18,11 @@ const applicationSchema = new mongoose.Schema({
   ],
   program: {
     name: { type: String },
+    status: {
+      type: String,
+      enum: ['in-process', 'approved', 'reject'],
+      default: 'in-process',
+    },
   },
   studentRef: {
     type: Schema.Types.ObjectId,

@@ -77,6 +77,21 @@ async function updateApplicationStatus(id, payload) {
   };
 }
 
+async function updateProgramStatus(id, payload) {
+  const app = await ApplicationRepo.updateApplication(
+    { _id: id },
+    { $set: { 'program.status': payload.status } }
+  );
+
+  if (!app) throw new Error('Something went wrong!');
+
+  return {
+    response: app,
+    message:
+      'Program status updated successfully and email sent to the student!',
+  };
+}
+
 async function selectProgram(payload) {
   const stdApp = await ApplicationRepo.fetchOneApplication({
     studentRef: payload.studentRef,
@@ -86,7 +101,7 @@ async function selectProgram(payload) {
     const { _id } = stdApp;
     const proUpdate = await ApplicationRepo.updateApplication(
       { _id },
-      { $set: { program: payload.programs } }
+      { $set: { program: { name: payload.name } } }
     );
 
     return {
@@ -95,7 +110,9 @@ async function selectProgram(payload) {
     };
   }
 
-  const app = await ApplicationRepo.createApplication({ program: payload });
+  const app = await ApplicationRepo.createApplication({
+    program: { name: payload.name },
+  });
 
   if (!app) throw new Error('Something went wrong!');
 
@@ -161,4 +178,5 @@ export default {
   sendEmailToStudent,
   updateApplicationStatus,
   selectProgram,
+  updateProgramStatus,
 };

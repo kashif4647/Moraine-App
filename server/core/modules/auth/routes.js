@@ -16,5 +16,6 @@ router.get('/application/:id', AuthController.fetchApplicationByID);
 
 router.get('/meet/student/:email', AuthController.sendEmailToStudent);
 router.put('/student/program', AuthController.selectProgram);
+router.put('/program/update/:id', AuthController.updateProgramStatus);
 
 export default router;

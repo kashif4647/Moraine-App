@@ -76,4 +76,14 @@ export default {
       return res.status(500).json({ error: err.message });
     }
   },
+  updateProgramStatus: async (req, res) => {
+    try {
+      const payload = req.body;
+      const { id } = req.params;
+      const response = await UserService.updateProgramStatus(id, payload);
+      return res.status(200).json(response);
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  },
 };
